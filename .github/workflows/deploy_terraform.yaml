@@ -29,7 +29,6 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-          working
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
