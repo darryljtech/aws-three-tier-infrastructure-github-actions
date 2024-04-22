@@ -1,0 +1,46 @@
+name: Terraform Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.8
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Request Approval
+        id: approval
+        run: echo "::set-output name=approved::true"
+        if: github.event_name == 'push'
+
+      - name: Manual Approval
+        if: steps.approval.outputs.approved == 'true'
+        run: |
+          echo "Deployment Approved. Proceeding with Terraform Apply."
+
+      - name: Terraform Apply
+        if: steps.approval.outputs.approved == 'true'
+        run: terraform apply tfplan
