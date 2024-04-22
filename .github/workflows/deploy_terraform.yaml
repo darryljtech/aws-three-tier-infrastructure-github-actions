@@ -21,24 +21,23 @@ jobs:
 
       - name: Checkout Code
         uses: actions/checkout@v3
-        with:
-          path: 'terraform'
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.0.8
 
+      - name: Change to Terraform Directory
+        run: cd ./terraform
+
 
       - name: Terraform Init
         run: terraform init
-        with:
-          path: 'terraform'
+          working
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
-        with:
-          path: 'terraform'
+
 
       - name: Request Approval
         id: approval
