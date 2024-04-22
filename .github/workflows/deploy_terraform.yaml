@@ -29,8 +29,11 @@ jobs:
         with:
           terraform_version: 1.0.8
 
+
       - name: Terraform Init
         run: terraform init
+        with:
+          path: 'terraform'
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
