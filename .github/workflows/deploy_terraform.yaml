@@ -30,7 +30,7 @@ jobs:
           aws-region: us-east-1
       
       - name: Change to Terraform Directory
-        run: cd terraform
+        run: cd ../terraform
 
       - name: Terraform Init
         run: terraform init
