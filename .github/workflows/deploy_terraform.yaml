@@ -28,7 +28,7 @@ jobs:
           terraform_version: 1.0.8
 
       - name: Change to Terraform Directory
-        run: cd ./terraform
+        run: chdir ./terraform
 
 
       - name: Terraform Init
